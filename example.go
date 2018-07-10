@@ -1,7 +1,9 @@
 package backoff
 
 import (
+	"fmt"
 	"log"
+	"time"
 
 	"golang.org/x/net/context"
 )
@@ -9,16 +11,20 @@ import (
 func ExampleRetry() {
 	// An operation that may fail.
 	operation := func() error {
-		return nil // or an error
+		//return nil // or an error
+		fmt.Printf("Time: %v\n", time.Now())
+		return fmt.Errorf("test error")
 	}
 
 	err := Retry(operation, NewExponentialBackOff())
 	if err != nil {
 		// Handle error.
+		fmt.Println("Failure...")
 		return
 	}
 
 	// Operation is successful.
+	fmt.Println("Success!")
 }
 
 func ExampleRetryContext() {
